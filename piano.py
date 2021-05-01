@@ -71,7 +71,4 @@ if __name__ == "__main__":
 
     # Print chords
     for i in range(num_chords):
-        expression = ''
-        for mod in all_modifiers:
-            expression += mod.draw()
-        print(expression)
+        print(''.join(mod.draw() for mod in all_modifiers))
