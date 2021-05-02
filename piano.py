@@ -1,4 +1,5 @@
 import numpy as np
+import argparse
 
 use_minor = True
 use_seventh = True
@@ -7,18 +8,15 @@ use_positions = True # TODO allow to change in arguments
 
 # We define a generic class for sampling stuff
 class WeightedDistributions:
-    # A list of objects with weigths
+    """A list of objects with weigths"""
     def __init__(self,objects,weights=None):
         self.objects = objects
-        self.n = len(objects) # Number of objects
+        
         if weights is None:
-            self.weights = np.ones(self.n)
-        elif isinstance(weights,list):
-            assert len(weights) == self.n
+            self.weights = np.ones(len(self.objects))
+        elif isinstance(weights,list) or isinstance(weights,np.ndarray):
+            assert len(weights) == len(self.objects)
             self.weights = np.array(weights)
-        elif isinstance(weights,np.ndarray):
-            assert weights.size == self.n
-            self.weights = weights
         else:
             raise ValueError("weights is of unknown type")
         # Normalize to probability distribution
@@ -57,17 +55,14 @@ if use_positions:
     all_modifiers += [positions]
 
 if __name__ == "__main__":
-    print("Welcome to the random chord generator!")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("num_chords", help="the number of chords to generate", type=int)
+    args = parser.parse_args()
+    num_chords = args.num_chords
 
-    # Get user input
-    num_chords = None
-    while not(num_chords):
-        num_chords_raw = input("How many chords do you want to play? ")
-        try:
-            num_chords = int(num_chords_raw)
-        except:
-            print("Please enter a valid number.")
-            num_chords = None
+    print("Welcome to the random chord generator!\n"
+         f"You requested {num_chords} chords to play...\n"
+          "Well, here you go:\n")
 
     # Print chords
     for i in range(num_chords):
